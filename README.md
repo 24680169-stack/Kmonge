@@ -1,5 +1,5 @@
 
-
+Práctica 1: Geometría Generativa con Python en Blender.
 ---
  Líneas 1–2: Importar librerías
 
