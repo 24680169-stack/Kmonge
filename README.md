@@ -529,12 +529,4 @@ Resultado: se crea un **hexágono de radio 5** en la escena.
 
 ---
 
-##  Qué hace todo el programa
 
-1. Borra la escena.
-2. Define una función para crear polígonos.
-3. Calcula los vértices usando matemáticas.
-4. Conecta los vértices con aristas.
-5. Genera un hexágono.
-
----
