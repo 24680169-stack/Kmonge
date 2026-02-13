@@ -347,3 +347,194 @@ Ejemplos:
 
 ---
 
+Para esta tarea usaras tu cuenta de github y crearas un repositorio donde expliques como realizar la práctica de dibujo de 1 polígono, recuerda compartir el enlace publico.
+---
+
+<img width="412" height="458" alt="image" src="https://github.com/user-attachments/assets/106df9e7-5ab2-4827-8ce1-e783d222d13e" />
+
+---
+<img width="538" height="617" alt="image" src="https://github.com/user-attachments/assets/f7318a45-25ce-4223-b266-a448f1182126" />
+
+---
+##  Líneas 1–2: Importar librerías
+
+```python
+import bpy
+import math
+```
+
+* `import bpy` → Librería de Blender para crear y manipular objetos.
+* `import math` → Librería matemática para usar seno, coseno, π, etc.
+
+---
+
+##  Línea 4: Definición de la función
+
+```python
+def crear_poligono_2d(nombre, lados, radio):
+```
+
+Aquí se crea una función llamada `crear_poligono_2d`.
+
+Recibe tres parámetros:
+
+* `nombre` → Nombre del objeto en Blender.
+* `lados` → Número de lados del polígono.
+* `radio` → Distancia del centro a cada vértice.
+
+---
+
+##  Líneas 6–7: Crear la malla y el objeto
+
+```python
+malla = bpy.data.meshes.new(nombre)
+objeto = bpy.data.objects.new(nombre, malla)
+```
+
+* `meshes.new(nombre)` → Crea una malla vacía.
+* `objects.new(nombre, malla)` → Crea un objeto que usa esa malla.
+
+En Blender:
+
+* **Malla** = geometría.
+* **Objeto** = contenedor visible en la escena.
+
+---
+
+##  Línea 10: Vincular el objeto a la escena
+
+```python
+bpy.context.collection.objects.link(objeto)
+```
+
+Esto hace que el objeto aparezca en la escena actual.
+
+Sin esta línea:
+
+* El objeto existiría en memoria.
+* Pero no sería visible en Blender.
+
+---
+
+## Líneas 12–13: Listas vacías
+
+```python
+vertices = []
+aristas = []
+```
+
+Se crean dos listas:
+
+* `vertices` → Guardará las coordenadas de los puntos.
+* `aristas` → Guardará las conexiones entre los puntos.
+
+---
+
+##  Líneas 16–20: Calcular los vértices
+
+```python
+for i in range(lados):
+    angulo = 2 * math.pi * i / lados
+    x = radio * math.cos(angulo)
+    y = radio * math.sin(angulo)
+    vertices.append((x, y, 0))
+```
+
+Este ciclo se repite según el número de lados.
+
+### Paso a paso:
+
+* `range(lados)` → Recorre cada vértice.
+* `angulo = 2πi / lados` → Divide el círculo completo entre los lados.
+* `cos` y `sin` → Calculan la posición del vértice.
+* `(x, y, 0)` → Se guarda el punto en 2D (z = 0).
+* `append` → Añade el vértice a la lista.
+
+Así se forman los puntos del polígono.
+
+---
+
+##  Líneas 23–25: Crear las aristas
+
+```python
+for i in range(lados):
+    aristas.append((i, (i + 1) % lados))
+```
+
+Este ciclo conecta los vértices.
+
+### Cómo funciona:
+
+* `i` → vértice actual.
+* `(i + 1)` → siguiente vértice.
+* `% lados` → asegura que el último se conecte con el primero.
+
+Ejemplo para un hexágono:
+
+```
+(0,1)
+(1,2)
+(2,3)
+(3,4)
+(4,5)
+(5,0) ← cierra la figura
+```
+
+---
+
+##  Líneas 28–29: Crear la geometría
+
+```python
+malla.from_pydata(vertices, aristas, [])
+malla.update()
+```
+
+* `from_pydata` → Carga los datos a la malla.
+
+  * `vertices` → puntos.
+  * `aristas` → conexiones.
+  * `[]` → caras (vacío porque es solo contorno).
+* `update()` → Actualiza la malla en Blender.
+
+---
+
+##  Líneas 32–33: Limpiar la escena
+
+```python
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete()
+```
+
+* Selecciona todos los objetos.
+* Los elimina.
+
+Sirve para empezar con la escena vacía.
+
+---
+
+##  Línea 36: Llamar a la función
+
+```python
+crear_poligono_2d("Poligono2D", lados=6, radio=5)
+```
+
+Aquí se ejecuta la función.
+
+Parámetros:
+
+* `"Poligono2D"` → nombre del objeto.
+* `lados=6` → hexágono.
+* `radio=5` → tamaño del polígono.
+Resultado: se crea un **hexágono de radio 5** en la escena.
+
+---
+
+##  Qué hace todo el programa
+
+1. Borra la escena.
+2. Define una función para crear polígonos.
+3. Calcula los vértices usando matemáticas.
+4. Conecta los vértices con aristas.
+5. Genera un hexágono.
+
+---
